@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import '../controller/system_controller.dart';
 import '../model/category_model.dart';
 import '../model/product_model.dart';
@@ -20,7 +19,7 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _imageUrlController = TextEditingController();
   final systemController = Get.find<SystemController>();
-  final ImagePicker _picker = ImagePicker();
+  // final ImagePicker _picker = ImagePicker();
   File? _image;
 
   CategoryModel _selectedCategory = CategoryModel(id: 1, name: "Hello world");
@@ -47,25 +46,25 @@ class _AddProductPageState extends State<AddProductPage> {
   }
 
   Future<void> _takePicture() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+    // final pickedFile = await _picker.pickImage(source: ImageSource.camera);
 
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      } else {}
-    });
+    // setState(() {
+    //   if (pickedFile != null) {
+    //     _image = File(pickedFile.path);
+    //   } else {}
+    // });
   }
 
   Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    // final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
-    });
+    // setState(() {
+    //   if (pickedFile != null) {
+    //     _image = File(pickedFile.path);
+    //   } else {
+    //     print('No image selected.');
+    //   }
+    // });
   }
 
   @override
