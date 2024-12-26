@@ -119,19 +119,21 @@ class _OrderCardState extends State<OrderCard> {
                     color: Colors.grey[600],
                   ),
                 ),
-                PopupMenuButton<OrderStateModel>(
-                  onSelected: (OrderStateModel status) {
-                    _updateOrderStatus(status);
-                  },
-                  itemBuilder: (context) => [
-                    for (var status in systemControler.orderState)
-                      PopupMenuItem(
-                        value: status,
-                        child: Text(status.name),
-                      ),
-                  ],
-                  icon: const Icon(Icons.more_vert),
-                ),
+                systemControler.userPicked.value.id == 99
+                    ? PopupMenuButton<OrderStateModel>(
+                        onSelected: (OrderStateModel status) {
+                          _updateOrderStatus(status);
+                        },
+                        itemBuilder: (context) => [
+                          for (var status in systemControler.orderState)
+                            PopupMenuItem(
+                              value: status,
+                              child: Text(status.name),
+                            ),
+                        ],
+                        icon: const Icon(Icons.more_vert),
+                      )
+                    : const SizedBox(),
               ],
             ),
             const SizedBox(height: 8),

@@ -13,7 +13,11 @@ const String description =
     "Bác sĩ thú y chuyên ngành nội khoa là chuyên gia chăm sóc sức khỏe cho động vật, đặc biệt là các bệnh lý liên quan đến các cơ quan nội tạng như tiêu hóa, hô hấp, tim mạch, và nội tiết. Họ chẩn đoán, điều trị các bệnh phức tạp và mạn tính, sử dụng phương pháp hiện đại như xét nghiệm, siêu âm, và hình ảnh học. Ngoài kỹ năng chuyên môn, bác sĩ thú y nội khoa còn cần khả năng giao tiếp tốt để tư vấn cho chủ vật nuôi về tình trạng và phương pháp điều trị, đảm bảo sức khỏe và chất lượng sống của động vật.";
 
 class SystemController extends GetxController {
+  var userPicked =
+      UserModel(fullName: "Admin", id: 99, password: "Admin", username: 'Admin')
+          .obs;
   List<UserModel> users = [
+    UserModel(fullName: "Admin", id: 99, password: "Admin", username: 'Admin'),
     UserModel(
         fullName: "Admin01",
         id: 1,
@@ -45,6 +49,20 @@ class SystemController extends GetxController {
     WorkingTime(id: 2, name: "Ca tối", timeStart: "18:00", timeEnd: "22:00"),
   ];
   // faculty
+
+  final faculties = <ProductModel>[].obs;
+
+  addProduct(ProductModel product) {
+    faculties.add(product);
+    Get.showSnackbar(const GetSnackBar(
+      message: 'Thêm sản phẩm thành công',
+      duration: Duration(seconds: 1),
+    ));
+  }
+
+  clearProduct() {
+    faculties.clear();
+  }
 
   final products = <ProductModel>[
     ProductModel(

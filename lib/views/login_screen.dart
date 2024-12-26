@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:pet_care/main.dart';
 import 'package:pet_care/views/register_screen.dart';
 
+import '../controller/system_controller.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -13,14 +15,28 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final RxBool isLoading = false.obs;
+  final systemController = Get.put(SystemController());
 
   void handleLogin() {
     isLoading.value = true;
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 1), () {
       isLoading.value = false;
-      Get.snackbar('Thông báo', 'Đăng nhập thành công!',
-          snackPosition: SnackPosition.BOTTOM);
-      Get.to(HomePage());
+      bool isExist = false;
+      for (var e in systemController.users) {
+        if (e.username == emailController.text &&
+            e.password == passwordController.text) {
+          systemController.userPicked.value = e;
+          isExist = true;
+        }
+      }
+      if (isExist) {
+        Get.offAll(const HomePage());
+        Get.snackbar('Thông báo', 'Đăng nhập thành công!',
+            snackPosition: SnackPosition.TOP);
+      } else {
+        Get.snackbar("Thông báo", "Tài khoản hoặc mật khẩu không chính xác",
+            snackPosition: SnackPosition.TOP);
+      }
     });
   }
 

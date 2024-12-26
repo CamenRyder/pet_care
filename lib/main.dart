@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_care/controller/system_controller.dart';
 
+import 'model/category_model.dart';
+import 'model/product_model.dart';
 import 'views/add_product.dart';
+import 'views/cart_page.dart';
 import 'views/login_screen.dart';
 import 'views/product_page.dart';
 import 'views/category_page.dart';
@@ -38,9 +41,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late SystemController systemController;
   @override
   void initState() {
-    final systemController = Get.put(SystemController());
+    systemController = Get.put(SystemController());
     super.initState();
   }
 
@@ -64,15 +68,15 @@ class _HomePageState extends State<HomePage> {
       ),
       body: ProductPage(), // Mặc định hiển thị trang Sản phẩm
       backgroundColor: backgroundColor,
-      drawer: const RightDrawer(),
+      drawer: RightDrawer(),
       // endDrawer: const RightDrawer(),
     );
   }
 }
 
 class RightDrawer extends StatelessWidget {
-  const RightDrawer({super.key});
-
+  RightDrawer({super.key});
+  final systemController = Get.find<SystemController>();
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -106,30 +110,77 @@ class RightDrawer extends StatelessWidget {
                     // Get.to(() => ProductPage());
                   },
                 ),
-                ListTile(
-                  title: const Text('Danh mục sản phẩm'),
-                  onTap: () {
-                    Get.to(() => CategoryPage());
-                  },
-                ),
+                systemController.userPicked.value.id == 99
+                    ? ListTile(
+                        title: const Text('Danh mục sản phẩm'),
+                        onTap: () {
+                          Get.to(() => CategoryPage());
+                        },
+                      )
+                    : const SizedBox(),
                 ListTile(
                   title: const Text('Đơn hàng'),
                   onTap: () {
                     Get.to(() => OrderPage());
                   },
                 ),
-                ListTile(
-                  title: const Text('Quản lí bác sĩ'),
-                  onTap: () {
-                    Get.to(() => DoctorManagementPage());
-                  },
-                ),
-                ListTile(
-                  title: const Text('Quản lí khung giờ'),
-                  onTap: () {
-                    Get.to(() => const ScheduleManagementPage());
-                  },
-                ),
+                systemController.userPicked.value.id != 99
+                    ? ListTile(
+                        title: const Text('Quản lí giỏ hàng'),
+                        onTap: () {
+                          Get.to(() => CartPage(
+                                cartProducts: [
+                                  ProductModel(
+                                      id: 2,
+                                      productName: "Sữa tắm",
+                                      price: "212.000 VND",
+                                      stockQuanity: 5,
+                                      categories: [
+                                        CategoryModel(id: 1, name: "Sữa tắm"),
+                                      ],
+                                      description: "Sữa tắm cho thú cưng",
+                                      pathImages: 'assets/images/suatam4.jpg'),
+                                  ProductModel(
+                                      id: 1,
+                                      productName: "Sữa tắm",
+                                      price: "212.000 VND",
+                                      stockQuanity: 5,
+                                      categories: [
+                                        CategoryModel(id: 1, name: "Sữa tắm"),
+                                      ],
+                                      description: "Sữa tắm cho thú cưng",
+                                      pathImages: 'assets/images/suatam4.jpg'),
+                                  ProductModel(
+                                      id: 1,
+                                      productName: "Sữa tắm",
+                                      price: "212.000 VND",
+                                      stockQuanity: 5,
+                                      categories: [
+                                        CategoryModel(id: 1, name: "Sữa tắm"),
+                                      ],
+                                      description: "Sữa tắm cho thú cưng",
+                                      pathImages: 'assets/images/suatam4.jpg'),
+                                ],
+                              ));
+                        },
+                      )
+                    : const SizedBox(),
+                systemController.userPicked.value.id == 99
+                    ? ListTile(
+                        title: const Text('Quản lí bác sĩ'),
+                        onTap: () {
+                          Get.to(() => DoctorManagementPage());
+                        },
+                      )
+                    : const SizedBox(),
+                systemController.userPicked.value.id == 99
+                    ? ListTile(
+                        title: const Text('Quản lí khung giờ'),
+                        onTap: () {
+                          Get.to(() => const ScheduleManagementPage());
+                        },
+                      )
+                    : const SizedBox(),
                 ListTile(
                   title: const Text('Đăng xuất'),
                   onTap: () {

@@ -153,6 +153,7 @@ class ProductPage extends StatelessWidget {
 // Widget cho từng sản phẩm trong GridView
 class ProductCard extends StatelessWidget {
   final ProductModel product;
+  final systemController = Get.find<SystemController>();
 
   ProductCard({required this.product});
 
@@ -176,45 +177,63 @@ class ProductCard extends StatelessWidget {
                   const BorderRadius.vertical(top: Radius.circular(10)),
               child: Image.asset(
                 product.pathImages,
-                height: 150,
+                height: 130,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Tên sản phẩm
-                  Text(
-                    product.productName,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                padding: const EdgeInsets.all(8.0),
+                child: Stack(
+                  children: [
+                    systemController.userPicked.value.id != 99
+                        ? GestureDetector(
+                            onTap: () {
+                              systemController.addProduct(product);
+                            },
+                            child: const Align(
+                              alignment: Alignment.bottomRight,
+                              child: Icon(
+                                Icons.shopping_cart_rounded,
+                                color: Colors.green,
+                                size: 22,
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Tên sản phẩm
+                        Text(
+                          product.productName,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        // Giá sản phẩm
+                        Text(
+                          'Giá: ${product.price}',
+                          style: const TextStyle(
+                            color: Colors.green,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        // Số lượng
+                        Text(
+                          'Số lượng: ${product.stockQuanity}',
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  // Giá sản phẩm
-                  Text(
-                    'Giá: ${product.price}',
-                    style: const TextStyle(
-                      color: Colors.green,
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  // Số lượng
-                  Text(
-                    'Số lượng: ${product.stockQuanity}',
-                    style: const TextStyle(
-                      color: Colors.grey,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                  ],
+                )),
           ],
         ),
       ),
