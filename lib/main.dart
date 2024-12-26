@@ -10,6 +10,7 @@ import 'views/order_page.dart';
 import 'views/doctor_management_page.dart';
 import 'views/schedule_management_page.dart';
 
+// dart run flutter_launcher_icons:generate
 final primaryColor = const Color.fromARGB(255, 154, 59, 59);
 void main() {
   runApp(PetShopApp());
