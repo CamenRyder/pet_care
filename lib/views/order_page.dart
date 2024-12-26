@@ -44,13 +44,14 @@ class _OrderPageState extends State<OrderPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemCount: orders.length,
-          itemBuilder: (context, index) {
-            final order = orders[index];
-            return OrderCard(order: order);
-          },
-        ),
+        child: Obx(() {
+          return ListView.builder(
+            itemCount: systemController.orderDetail.length,
+            itemBuilder: (context, index) {
+              return OrderCard(order: systemController.orderDetail[index]);
+            },
+          );
+        }),
       ),
     );
   }

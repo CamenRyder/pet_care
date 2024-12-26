@@ -86,7 +86,9 @@ class _CartPageState extends State<CartPage> {
             ),
             const SizedBox(height: 16),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                systemController.processPayMent();
+              },
               child: Container(
                 height: 55,
                 decoration: BoxDecoration(

@@ -52,6 +52,23 @@ class SystemController extends GetxController {
 
   final faculties = <ProductModel>[].obs;
 
+  processPayMent() {
+    OrderModel orderModel = OrderModel(
+      dateCreate: DateTime.now().toString(),
+      id: 1,
+      totalPrice: '700.000 VNĐ',
+      nameOrder: "Order 1",
+      stateOrder: OrderStateModel(id: 0, name: 'Mới'),
+      products: faculties,
+    );
+    orderDetail.add(orderModel);
+    Get.showSnackbar(const GetSnackBar(
+      message: 'Thanh toán thành công',
+      duration: Duration(seconds: 1),
+    ));
+    faculties.clear();
+  }
+
   addProduct(ProductModel product) {
     faculties.add(product);
     Get.showSnackbar(const GetSnackBar(
