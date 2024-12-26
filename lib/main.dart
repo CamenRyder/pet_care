@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_care/controller/system_controller.dart';
 
+import 'views/add_product.dart';
 import 'views/login_screen.dart';
 import 'views/product_page.dart';
 import 'views/category_page.dart';
@@ -55,7 +56,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: const Icon(Icons.add, color: Colors.white),
             onPressed: () {
-              // Get.to(() => Order());
+              Get.to(() => AddProductPage());
             },
           ),
         ],

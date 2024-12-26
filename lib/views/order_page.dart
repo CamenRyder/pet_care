@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_care/model/order_model.dart';
 import 'package:pet_care/model/order_state_model.dart';
-import 'package:pet_care/views/help_function.dart';
 import 'package:pet_care/views/schedule_management_page.dart';
 
 import '../controller/system_controller.dart';
@@ -38,7 +37,7 @@ class _OrderPageState extends State<OrderPage> {
               color: Colors.white,
             )),
         title: const Text(
-          'Danh sách Đơn đặt hàng',
+          'Danh sách đơn đặt hàng',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
         ),
         backgroundColor: const Color.fromARGB(255, 154, 59, 59), // Màu chủ đạo

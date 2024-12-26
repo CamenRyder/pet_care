@@ -36,6 +36,8 @@ class _DoctorManagementPageState extends State<DoctorManagementPage> {
 
   List<DoctorModel> doctorsList = [];
 
+  MajorModel majorModel = MajorModel(id: 1, majorName: "Thú y");
+
   List<DoctorModel> get filteredDoctors {
     if (searchController.text.isEmpty) {
       return doctorsList;
@@ -76,17 +78,27 @@ class _DoctorManagementPageState extends State<DoctorManagementPage> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
-        controller: searchController,
         decoration: InputDecoration(
           labelText: 'Tìm kiếm bác sĩ...',
           labelStyle: const TextStyle(color: Colors.grey),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
           prefixIcon: const Icon(Icons.search, color: Colors.grey),
         ),
+        // items: doctorsList.map((DoctorModel doctor) {
+        //   return DropdownMenuItem<String>(
+        //     value: doctor.name,
+        //     child: Text(doctor.name),
+        //   );
+        // }).toList(),
+        // onSubmitted: (value) {
+        //   searchController.text = value;
+        //   filteredDoctors;
+        // },
         onChanged: (value) {
-          if (searchController.text != value) {
-            setState(() {});
-          }
+          setState(() {
+            searchController.text = value;
+            filteredDoctors;
+          });
         },
       ),
     );
@@ -273,12 +285,14 @@ class _AddDoctorPageState extends State<AddDoctorPage> {
   TextEditingController experienceController = TextEditingController();
   TextEditingController feeController = TextEditingController();
   String image = 'assets/images/bacsi1.png'; // Hình ảnh bác sĩ mặc định
-
+  MajorModel majorModel = MajorModel(id: 1, majorName: "Thú y");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 154, 59, 59), // Màu chủ đạo
+        backgroundColor: Colors
+            .white, // const Color.fromARGB(255, 154, 59, 59), // Màu chủ đạo
         title: const Text('Thêm Bác Sĩ'),
       ),
       body: Padding(
@@ -304,6 +318,79 @@ class _AddDoctorPageState extends State<AddDoctorPage> {
             ),
             const SizedBox(height: 16),
             TextField(
+              readOnly: false,
+              onTap: () async {
+                final systemController = Get.find<SystemController>();
+                final major = await showModalBottomSheet(
+                  context: context,
+                  backgroundColor: Colors.white,
+                  isScrollControlled: true,
+                  builder: (context) {
+                    return Container(
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      width: MediaQuery.of(context).size.width,
+                      margin: const EdgeInsets.symmetric(vertical: 12),
+                      child: Column(children: [
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        const Text(
+                          'Chọn chuyên ngành của bác sĩ',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: systemController.majors.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(
+                                      context, systemController.majors[index]);
+                                },
+                                child: Container(
+                                  width: double.infinity,
+                                  margin: const EdgeInsets.only(
+                                      bottom: 16, left: 12, right: 12),
+                                  padding: const EdgeInsets.all(16.0),
+                                  decoration: const BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15)),
+                                    color: Color.fromARGB(255, 184, 92, 92),
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: Colors.grey,
+                                        width: 1,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    systemController.majors[index].majorName,
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ]),
+                    );
+                  },
+                );
+                setState(() {
+                  majorModel = major;
+                  specialtyController.text = major.majorName;
+                });
+              },
               controller: specialtyController,
               decoration: InputDecoration(
                 labelText: 'Chuyên Ngành',
@@ -356,7 +443,7 @@ class _AddDoctorPageState extends State<AddDoctorPage> {
                   intro: phoneController.text,
                   pathUrlAvatar: image,
                   name: nameController.text,
-                  major: MajorModel(id: 3, majorName: specialtyController.text),
+                  major: majorModel,
                   yearsOfExp: int.parse(experienceController.text),
                   pirce: feeController.text,
                   timeWorking: SystemController().workingTime,
@@ -370,7 +457,8 @@ class _AddDoctorPageState extends State<AddDoctorPage> {
                   borderRadius: BorderRadius.circular(15),
                 ),
               ),
-              child: const Text('Thêm Bác Sĩ', style: TextStyle(fontSize: 18)),
+              child: const Text('Thêm Bác Sĩ',
+                  style: TextStyle(fontSize: 18, color: Colors.white)),
             ),
           ],
         ),
